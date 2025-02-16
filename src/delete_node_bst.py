@@ -11,26 +11,36 @@ class Solution(object):
 		:type key: int
 		:rtype: Optional[TreeNode]
 		"""
-		# I really 
 		result = self.find(root, key, None)
 		if result == None:
 			return root
 
 		node, parent = result
-
+		# I don't think that I am learning this properly.
 		smallest_right = self.find_smallest_node(node.right)
 		if smallest_right == None:
 			if not parent: 
 				return node.left
 			parent.left = node.left
-			return parent
+			parent.right = None 
+			return root
 
 		smallest_right.left = node.left
 		if parent == None:
 			return node.right
 		else:
-			parent.left = node.right
+			if parent.left and parent.left.val == node.val:
+				parent.left = node.right
+			elif parent.right and parent.right.val == node.val:
+				parent.right = node.right
 			return root
+	
+	def delete(self, node):
+		smallest_right = self.find_smallest_node(node.left)
+		if not smallest_right:
+			return node.left
+		smallest_right.left = node.left
+		return node.right
 
 	def find(self, node, target, parent):
 		if node == None:
